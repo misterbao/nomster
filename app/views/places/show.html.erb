@@ -3,12 +3,15 @@
   <i><%= @place.address %></i>
   <br/><br/>
   <p><%= @place.description %></p>
+  <div>
+   <% @place.photos.each do |photo| %>
+    <figure class="figure">
+      <img class="snapshot" src="<%= photo.picture.url %>" class="figure-img img-fluid rounded" alt="<%= photo.caption %>">
+      <figcaption class="figure-caption text-center"><%= photo.caption %></figcaption>
+    </figure>
+    <% end %>
+  </div>
 
-
-
-  </head>
-  <body>
-  <div id="map"></div>
   <% if @place.latitude.present? && @place.longitude.present? %>
   <script>
 
@@ -76,6 +79,39 @@
 <button type="button" class="btn btn-primary btn-lg float-right" data-toggle="modal" data-target="#myModal">
   Add a comment
 </button>
+
+  <button type="button" class="btn btn-primary btn-lg float-right" data-toggle="modal" data-target="#myModalphoto">
+    Add a Photo
+  </button>
+
+</div>
+
+<div class="clear"> </div>
+<!-- Photo Modal -->
+<div class="modal fade" id="myModalphoto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">Add a Photo</h4>
+      </div>
+
+        <%= simple_form_for @photo, url: place_photos_path(@place) do |f| %>
+          <div class="modal-body">
+            <%= f.input :caption %>
+            <%= f.input :picture %>
+          </div>
+
+      <!-- inside photo modal -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+         <%= f.submit "Add a Photo", class: 'btn btn-primary' %>
+      </div>
+      <% end %>
+    </div>
+  </div>
 </div>
 
 <div class="clear"></div>
@@ -93,3 +129,6 @@
   </div>
 <% end %>
 </div>
+
+
+
